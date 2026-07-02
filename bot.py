@@ -684,46 +684,46 @@ async def check_subscription(user_id: int) -> bool:
 # ============================================================
 # ОБРАБОТЧИКИ
 # ============================================================
-@dp.chat_join_request()
-async def handle_join_request(request: ChatJoinRequest):
-    user = request.from_user
-    print(f"\n🔔 Новая заявка от {user.first_name} (@{user.username})")
+# @dp.chat_join_request()
+# async def handle_join_request(request: ChatJoinRequest):
+#     user = request.from_user
+#     print(f"\n🔔 Новая заявка от {user.first_name} (@{user.username})")
     
-    try:
-        await request.approve()
-        print(f"✅ Заявка {user.id} одобрена")
-        await save_user(user.id, user.username, user.first_name)
-        await asyncio.sleep(1.5)
+#     try:
+#         await request.approve()
+#         print(f"✅ Заявка {user.id} одобрена")
+#         await save_user(user.id, user.username, user.first_name)
+#         await asyncio.sleep(1.5)
         
-        try:
-            await bot.send_video_note(chat_id=user.id, video_note=VIDEO_FILE_ID)
-            await asyncio.sleep(1)
+#         try:
+#             await bot.send_video_note(chat_id=user.id, video_note=VIDEO_FILE_ID)
+#             await asyncio.sleep(1)
             
-            await bot.send_message(
-                chat_id=user.id,
-                text=f"<b>🚀 КАК СТАРТАНУТЬ В ТОВАРКЕ?</b>\n\n"
-                     f"<i>{user.first_name}</i>, я подготовил инструкцию, как выйти на доход <b>50.000 — 100.000 ₽</b>\n\n"
-                     f"👇 <b>Нажми на кнопку ниже</b>",
-                parse_mode="HTML",
-                reply_markup=get_read_article_button()
-            )
-            print(f"✅ Сообщение отправлено {user.id}")
+#             await bot.send_message(
+#                 chat_id=user.id,
+#                 text=f"<b>🚀 КАК СТАРТАНУТЬ В ТОВАРКЕ?</b>\n\n"
+#                      f"<i>{user.first_name}</i>, я подготовил инструкцию, как выйти на доход <b>50.000 — 100.000 ₽</b>\n\n"
+#                      f"👇 <b>Нажми на кнопку ниже</b>",
+#                 parse_mode="HTML",
+#                 reply_markup=get_read_article_button()
+#             )
+#             print(f"✅ Сообщение отправлено {user.id}")
             
-        except Exception as e:
-            print(f"❌ Ошибка при отправке сообщения {user.id}: {e}")
-            await asyncio.sleep(2)
-            try:
-                await bot.send_message(
-                    chat_id=user.id,
-                    text=f"<b>🚀 Привет, {user.first_name}!</b>\n\n"
-                         f"Напиши /start, чтобы начать обучение",
-                    parse_mode="HTML"
-                )
-            except Exception:
-                await mark_unreachable(user.id)
+#         except Exception as e:
+#             print(f"❌ Ошибка при отправке сообщения {user.id}: {e}")
+#             await asyncio.sleep(2)
+#             try:
+#                 await bot.send_message(
+#                     chat_id=user.id,
+#                     text=f"<b>🚀 Привет, {user.first_name}!</b>\n\n"
+#                          f"Напиши /start, чтобы начать обучение",
+#                     parse_mode="HTML"
+#                 )
+#             except Exception:
+#                 await mark_unreachable(user.id)
             
-    except Exception as e:
-        print(f"❌ Ошибка в handle_join_request: {e}")
+#     except Exception as e:
+#         print(f"❌ Ошибка в handle_join_request: {e}")
 
 
 @dp.message(Command("start"))
